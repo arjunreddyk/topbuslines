@@ -8,40 +8,49 @@ body {
   margin: 0;
   padding: 1rem;
   display: grid;
-  place-items: center;
   min-height: 100vh;
 }
 
 ul {
   padding: 0;
   margin: 0;
-  max-width: 700px;
+  max-width: 250px;
   position: relative;
+  margin-left: 1rem;
+}
+
+.lineNumber:hover {
+  cursor: pointer;
 }
 
 ul::before {
   content: "";
-  width: 0.5rem;
+  width: 0.2rem;
   height: 100%;
   position: absolute;
   top: 0;
   left: 8%;
-  background: peachpuff;
+  background: rgb(182, 207, 251);
   z-index: -1;
 }
 
 li {
-  padding: 0.5rem 1.5rem 1rem;
-  border-radius: 1.5rem;
-  background: peachpuff;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  background: rgb(182, 207, 251);
+  text-align: right;
 }
 
 li + li {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 ::marker {
-  font-weight: 600;
-  color: tomato;
-  font-size: 1.8rem;
+  font-weight: 500;
+  color: rgb(223, 41, 9);
+  font-size: 1.2rem;
+}
+
+.icon {
+  vertical-align: middle;
 }

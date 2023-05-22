@@ -34,41 +34,15 @@ function App() {
 
   const { topTenLines, pickTopTenLines } = lines;
 
-  if (topTenLines) {
-    return topTenLines.map((lineNumber, i) => {
-      return (
-        <>
-          <h3
-            onClick={() =>
-              setIsOpen((preState) => ({
-                ...preState,
-                [i]: !preState[i],
-              }))
-            }
-          >
-            <>
-              Line {lineNumber[0]} has{lineNumber[1]} stops
-            </>
-            {isOpen[i] ? <ExpandLess /> : <ExpandMore />}
-          </h3>
-          <ul>
-            {isOpen[i] &&
-              pickTopTenLines[lineNumber[0]].map((stop) => (
-                <li>{stop.StopPointName}</li>
-              ))}
-          </ul>
-        </>
-      );
-    });
-  }
-
-  /*  return (
-   <>
-      <div>
-        {Object.entries(lines).map((arr, i) => {
+  return (
+    <>
+      <h3>TOP TEN BUS LINES</h3>
+      {topTenLines &&
+        topTenLines.map((lineNumber, i) => {
           return (
-            <div>
-              <h3
+            <>
+              <p
+                className="lineNumber"
                 onClick={() =>
                   setIsOpen((preState) => ({
                     ...preState,
@@ -76,21 +50,28 @@ function App() {
                   }))
                 }
               >
-                <DirectionsBusIcon /> {arr[0]}
-                {isOpen[i] ? <ExpandLess /> : <ExpandMore />}
-              </h3>
-              <ul>
+                <>
+                  <DirectionsBusIcon className="icon" /> {lineNumber[0]}
+                  <small> has </small>
+                  {lineNumber[1]} <small>stops</small>
+                </>
+                {isOpen[i] ? (
+                  <ExpandLess className="icon" />
+                ) : (
+                  <ExpandMore className="icon" />
+                )}
+              </p>
+              <ul className={isOpen[i] ? "slide" : undefined}>
                 {isOpen[i] &&
-                  arr[1].map((line) => {
-                    return <li>{line.StopPointName}</li>;
-                  })}
+                  pickTopTenLines[lineNumber[0]].map((stop) => (
+                    <li>{stop.StopPointName}</li>
+                  ))}
               </ul>
-            </div>
+            </>
           );
         })}
-      </div>
     </>
-  ); */
+  );
 }
 
 export default App;
