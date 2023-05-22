@@ -17,14 +17,13 @@ import TrainIcon from "@mui/icons-material/Train";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import Box from "@mui/material/Box";
 import ListItem from "@mui/material/ListItem";
-import { FixedSizeList } from "react-window";
 
 function App() {
   const [lines, setLines] = useState({});
   const [isOpen, setIsOpen] = useState(Array(10).fill(false));
 
   useEffect(() => {
-    fetch(`/lines`)
+    fetch(`/api/lines`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
