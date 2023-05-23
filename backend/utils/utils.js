@@ -1,30 +1,33 @@
 const countBy = require("lodash/countBy");
 const groupBy = require("lodash/groupBy");
 const pickBy = require("lodash/pickBy");
-const journeyPatterns = require("../mocks/journeyPatterns.json").ResponseData
-  .Result;
-const stops = require("../mocks/stops.json").ResponseData.Result;
 
-const filterOneWay = journeyPatterns.filter((obj) => obj.DirectionCode === "1");
-const groupByLineNumbers = groupBy(filterOneWay, "LineNumber");
-const totalStopsPerLine = countBy(filterOneWay, "LineNumber");
+const getTopTenLines = ({ journeyPatterns, stops }) => {
+  const linePattern = journeyPatterns.ResponseData.Result;
+  const stopsNames = stops.ResponseData.Result;
 
-const topTenLines = Object.entries(totalStopsPerLine)
-  .sort((a, b) => b[1] - a[1])
-  .splice(0, 10);
+  const filterOneWay = linePattern.filter((obj) => obj.DirectionCode === "1");
+  const groupByLineNumbers = groupBy(filterOneWay, "LineNumber");
+  const totalStopsPerLine = countBy(filterOneWay, "LineNumber");
 
-const pickTopTenLines = pickBy(groupByLineNumbers, (_, key) =>
-  topTenLines.map((line) => line[0]).includes(key)
-);
+  const topLines = Object.entries(totalStopsPerLine)
+    .sort((a, b) => b[1] - a[1])
+    .splice(0, 10);
 
-for (const key in pickTopTenLines) {
-  pickTopTenLines[key].map((point, i, arr) => {
-    return stops.map((stop) => {
-      if (point.JourneyPatternPointNumber === stop.StopPointNumber) {
-        arr[i] = { ...point, ...stop };
-      }
+  const linesWithStops = pickBy(groupByLineNumbers, (_, key) =>
+    topLines.map((line) => line[0]).includes(key)
+  );
+
+  for (const key in linesWithStops) {
+    linesWithStops[key].map((point, i, arr) => {
+      return stopsNames.map((stop) => {
+        if (point.JourneyPatternPointNumber === stop.StopPointNumber) {
+          arr[i] = { ...point, stopName: stop.StopPointName };
+        }
+      });
     });
-  });
-}
+  }
+  return { topLines, linesWithStops };
+};
 
-module.exports = { topTenLines, pickTopTenLines };
+module.exports = { getTopTenLines };

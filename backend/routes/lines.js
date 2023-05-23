@@ -1,18 +1,29 @@
-var express = require("express");
-var router = express.Router();
-const lines = require("../mocks/lines.json");
-const utils = require("../utils/utils");
+const express = require("express");
+const router = express.Router();
 const axios = require("axios");
 
-router.get("/", async function (req, res, next) {
-  let url1 = "https://jsonplaceholder.typicode.com/posts/1";
-  let url2 = "https://jsonplaceholder.typicode.com/posts/3";
-  //https://api.sl.se/api2/LineData.json?model=jour&key=${process.env.TRAFIK_KEY}&DefaultTransportModeCode=BUS
-  let request1 = axios.get(url1);
-  let request2 = axios.get(url2);
-  const [answer1, answer2] = await axios.all([request1, request2]);
+const utils = require("../utils/utils");
+const { url1, url2 } = require("../constants.js");
 
-  res.json({ ...answer1.data, ...answer2.data });
+router.get("/", async function (req, res, next) {
+  const [journeyPatternPointOnLine, stops] = await axios.all([
+    axios.get(url1),
+    axios.get(url2),
+  ]);
+
+  const { data: patternData } = journeyPatternPointOnLine;
+  const { data: stopData } = stops;
+
+  if (patternData.StatusCode !== 0 || stopData.StatusCode !== 0) {
+    res.status(503).json({ error: { ...patternData, ...stopData } });
+  } else {
+    const topLines = utils.getTopTenLines({
+      journeyPatterns: patternData,
+      stops: stopData,
+    });
+
+    res.json(topLines);
+  }
 });
 
 module.exports = router;
