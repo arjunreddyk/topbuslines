@@ -1,16 +1,18 @@
 {
-  "name": "sbab",
+  "name": "toplines",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "application to fetch Stockholm bus lines",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently 'npm start --prefix backend' 'npm start --prefix client'"
   },
   "keywords": [],
-  "author": "",
+  "author": "arjunreddyk",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^8.0.1"
-  }
+  },
+  "workspaces": [
+    "client",
+    "backend"
+  ]
 }

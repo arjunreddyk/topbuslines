@@ -14,18 +14,22 @@ body {
 ul {
   padding: 0;
   margin: 0;
-  max-width: 250px;
   position: relative;
   margin-left: 1rem;
 }
 
 .lineNumber {
-  background: rgb(120, 120, 161);
-  max-width: 250px;
-  padding: 0.7rem 1rem;
+  height: 3rem;
+  line-height: 3rem;
+  text-align: center;
 }
+
 .lineNumber:hover {
   cursor: pointer;
+}
+
+.paper:hover {
+  background: rgba(245, 245, 245);
 }
 
 ul::before {
@@ -43,7 +47,6 @@ li {
   padding: 0.7rem 1rem;
   border-radius: 0.3rem;
   background: rgb(182, 207, 251);
-  text-align: right;
 }
 
 li + li {
