@@ -1,11 +1,13 @@
-import { useCallback, useState, useEffect } from "react";
-import "./App.css";
-import * as React from "react";
+import { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+
 import Error from "./components/Error";
 import Lines from "./components/Lines";
 import Stops from "./components/Stops";
 import Loader from "./components/Loader";
+import "./App.css";
 
 function App() {
   const [lines, setLines] = useState({});
@@ -40,13 +42,16 @@ function App() {
     <Grid container spacing={1}>
       <Grid item xs={12} md={3}>
         <div>
-          <h3>TOP TEN BUS LINES</h3>
+          <Typography variant="h4" gutterBottom fontWeight={200}>
+            TOP TEN BUS LINES
+          </Typography>
           {isError && <Error message={isError} />}
           {topLines &&
             topLines.map((lineNumber, i) => {
               return (
                 <div key={i}>
-                  <p
+                  <Box
+                    my={2}
                     className="lineNumber"
                     onClick={() =>
                       setIsOpen((preState) => ({
@@ -56,7 +61,7 @@ function App() {
                     }
                   >
                     <Lines lineNumber={lineNumber} expand={isOpen[i]} />
-                  </p>
+                  </Box>
 
                   <Stops
                     stops={linesWithStops[lineNumber[0]]}

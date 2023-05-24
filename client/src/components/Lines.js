@@ -8,13 +8,17 @@ const Lines = ({ lineNumber, expand }) => {
   return (
     <>
       <Paper elevation={4} square className="paper">
-        <DirectionsBusIcon className="icon" /> {lineNumber[0]}
-        <small> has </small> {lineNumber[1]} <small>stops</small>
-        {expand ? (
-          <ExpandLess className="icon" />
-        ) : (
-          <ExpandMore className="icon" />
-        )}
+        <span className="float-left">
+          {expand ? (
+            <ExpandLess className="icon" />
+          ) : (
+            <ExpandMore className="icon" />
+          )}
+          <DirectionsBusIcon className="icon" /> {lineNumber[0]}
+        </span>
+        <span className="float">
+          {lineNumber[1]} <small>stops</small>
+        </span>
       </Paper>
     </>
   );
