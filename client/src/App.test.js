@@ -11,10 +11,19 @@ describe("<App />", () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  test("render heading", () => {
+  test("render heading", async () => {
+    server.use(
+      rest.get("/api/lines", (req, res, ctx) => {
+        return res(ctx.json({}));
+      })
+    );
+
     render(<App />);
-    const linkElement = screen.getByText(/TOP TEN BUS LINES/i);
-    expect(linkElement).toBeInTheDocument();
+
+    await waitFor(() => {
+      const heading = screen.getByText(/TOP TEN BUS LINES/i);
+      expect(heading).toBeInTheDocument();
+    });
   });
 
   test("handles server error", async () => {

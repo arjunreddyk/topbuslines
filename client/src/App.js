@@ -22,6 +22,7 @@ function App() {
 
       if (!response.ok) {
         setIsError({ Message: response.statusText });
+        setLoading(false);
         return;
       }
 
@@ -29,12 +30,13 @@ function App() {
 
       if (data.error) {
         setIsError(data.error);
+        setLoading(false);
         return;
       }
 
       setLines(data);
+      setLoading(false);
     })();
-    setLoading(false);
   }, []);
 
   if (loading) {
