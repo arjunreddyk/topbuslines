@@ -7,8 +7,8 @@ const Error = ({ message }) => {
     <Alert severity="error">
       <>
         <span>Something went wrong.</span>
-        {StatusCode && <pre>Error code:{StatusCode}</pre>}
-        {Message && <pre>Error Message:{Message}</pre>}
+        {StatusCode && <pre> Error code:{StatusCode}</pre>}
+        {Message && <pre> Error Message:{Message}</pre>}
       </>
     </Alert>
   );

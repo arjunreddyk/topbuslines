@@ -12,7 +12,9 @@ const Stops = ({ stops, expand }) => {
     >
       <ul>
         {stops.map((stop, i) => (
-          <li key={i}>{stop.stopName}</li>
+          <li key={i} data-testid="stop-names">
+            {stop.stopName}
+          </li>
         ))}
       </ul>
     </Slide>

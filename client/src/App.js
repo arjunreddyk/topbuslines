@@ -16,21 +16,25 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`/api/lines`)
-      .then((response) => response.json())
-      .then((data) => {
-        setLines(data);
-        if (data.error) {
-          setIsError(data.error);
-        }
-      })
-      .catch((error) => {
-        setIsError(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    (async () => {
+      setLoading(true);
+      const response = await fetch(`/api/lines`);
+
+      if (!response.ok) {
+        setIsError({ Message: response.statusText });
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.error) {
+        setIsError(data.error);
+        return;
+      }
+
+      setLines(data);
+    })();
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -38,6 +42,7 @@ function App() {
   }
 
   const { topLines, linesWithStops } = lines;
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={3}>
@@ -49,17 +54,17 @@ function App() {
           {topLines &&
             topLines.map((lineNumber, i) => {
               return (
-                <div key={i}>
-                  <Box
-                    my={2}
-                    className="lineNumber"
-                    onClick={() =>
-                      setIsOpen((preState) => ({
-                        ...preState,
-                        [i]: !preState[i],
-                      }))
-                    }
-                  >
+                <div
+                  key={i}
+                  data-testid="bus-lines"
+                  onClick={() => {
+                    setIsOpen((preState) => ({
+                      ...preState,
+                      [i]: !preState[i],
+                    }));
+                  }}
+                >
+                  <Box my={2} className="lineNumber">
                     <Lines lineNumber={lineNumber} expand={isOpen[i]} />
                   </Box>
 
