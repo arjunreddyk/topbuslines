@@ -1,5 +1,6 @@
-import React from "react";
-import Alert from "@mui/material/Alert";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Alert from '@mui/material/Alert';
 
 const Error = ({ message }) => {
   const { StatusCode, Message } = message;
@@ -12,6 +13,15 @@ const Error = ({ message }) => {
       </>
     </Alert>
   );
+};
+
+Error.propTypes = {
+  message: 
+    PropTypes.shape({
+      StatusCode: PropTypes.string,
+      Message: PropTypes.string
+    })
+  
 };
 
 export default Error;
