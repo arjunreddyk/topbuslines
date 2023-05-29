@@ -1,5 +1,6 @@
-import React from "react";
-import Slide from "@mui/material/Slide";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Slide from '@mui/material/Slide';
 
 const Stops = ({ stops, expand }) => {
   return (
@@ -21,4 +22,8 @@ const Stops = ({ stops, expand }) => {
   );
 };
 
+Stops.propTypes = {
+  expand: PropTypes.bool,
+  stops:  PropTypes.array
+};
 export default Stops;

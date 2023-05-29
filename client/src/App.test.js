@@ -1,19 +1,18 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import App from "./App";
-import { rest } from "msw";
-import { setupServer } from "msw/node";
-import "@testing-library/jest-dom";
+import React, { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import App from './App';
 
 const server = setupServer();
 
-describe("<App />", () => {
+describe('<App />', () => {
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  test("render heading", async () => {
+  test('render heading', async () => {
     server.use(
-      rest.get("/api/lines", (req, res, ctx) => {
+      rest.get('/api/lines', (req, res, ctx) => {
         return res(ctx.json({}));
       })
     );
@@ -26,25 +25,25 @@ describe("<App />", () => {
     });
   });
 
-  test("handles server error", async () => {
+  test('handles server error', async () => {
     server.use(
-      rest.get("/api/lines", (req, res, ctx) => {
+      rest.get('/api/lines', (req, res, ctx) => {
         return res(ctx.status(500));
       })
     );
 
     render(<App />);
 
-    await screen.findByRole("alert");
+    await screen.findByRole('alert');
 
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      "Something went wrong. Error Message:Internal Server Error"
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Something went wrong. Error Message:Internal Server Error'
     );
   });
 
-  test("renders bus lines", async () => {
+  test('renders bus lines', async () => {
     server.use(
-      rest.get("/api/lines", (req, res, ctx) => {
+      rest.get('/api/lines', (req, res, ctx) => {
         return res(
           ctx.json({
             topLines: [
@@ -52,8 +51,8 @@ describe("<App />", () => {
               [2, 1],
             ],
             linesWithStops: {
-              3: [{ stopName: "some-bus-stop" }],
-              2: [{ stopName: "another-bus-stop" }],
+              3: [{ stopName: 'some-bus-stop' }],
+              2: [{ stopName: 'another-bus-stop' }],
             },
           })
         );
@@ -62,21 +61,21 @@ describe("<App />", () => {
     render(<App />);
 
     await waitFor(() => {
-      expect(screen.getAllByTestId("bus-lines")).toHaveLength(2);
+      expect(screen.getAllByTestId('bus-lines')).toHaveLength(2);
     });
   });
 
-  test("renders stop names", async () => {
+  test('renders stop names', async () => {
     server.use(
-      rest.get("/api/lines", (req, res, ctx) => {
+      rest.get('/api/lines', (req, res, ctx) => {
         return res(
           ctx.json({
-            topLines: [["1", 3]],
+            topLines: [['1', 3]],
             linesWithStops: {
               1: [
-                { stopName: "1-bus-stop" },
-                { stopName: "2-bus-stop" },
-                { stopName: "3-bus-stop" },
+                { stopName: '1-bus-stop' },
+                { stopName: '2-bus-stop' },
+                { stopName: '3-bus-stop' },
               ],
             },
           })
@@ -86,13 +85,13 @@ describe("<App />", () => {
     render(<App />);
 
     const busLine = await waitFor(() => {
-      return screen.getByTestId("bus-lines");
+      return screen.getByTestId('bus-lines');
     });
 
     fireEvent.click(busLine);
 
     await waitFor(() => {
-      expect(screen.getAllByTestId("stop-names")).toHaveLength(3);
+      expect(screen.getAllByTestId('stop-names')).toHaveLength(3);
     });
   });
 });

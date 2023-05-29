@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import React, { useState, useEffect } from 'react';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
-import Error from "./components/Error";
-import Lines from "./components/Lines";
-import Stops from "./components/Stops";
-import Loader from "./components/Loader";
-import "./App.css";
+import Error from './components/Error';
+import Lines from './components/Lines';
+import Stops from './components/Stops';
+import Loader from './components/Loader';
+import './App.css';
 
 function App() {
   const [lines, setLines] = useState({});
@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const response = await fetch(`/api/lines`);
+      const response = await fetch('/api/lines');
 
       if (!response.ok) {
         setIsError({ Message: response.statusText });
